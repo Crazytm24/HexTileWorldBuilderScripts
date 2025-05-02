@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using System.Linq;
 
 public class TilePiece : MonoBehaviour
@@ -8,6 +9,9 @@ public class TilePiece : MonoBehaviour
     public Dictionary<int, TilePiece> neighbors = new Dictionary<int, TilePiece>(); // Store neighbors (0-5)
     public TileHeightService tileHeightService;
     private bool BLOCKED = false;
+    private bool isPath = false;
+    public GameObject pathTiles;
+    public GameObject grassTile;
 
     private void Start()
     {
@@ -27,26 +31,44 @@ public class TilePiece : MonoBehaviour
         return new List<TilePiece>(neighbors.Values);
     }
 
-    public void ClickOnTile(bool shiftClicked)
+    public void ClickOnTile(ClickType type, bool isAdding, bool shiftClicked)
     {
         if (!BLOCKED)
         {
-            RaiseTile();
+            switch (type)
+            {
+                case ClickType.HeightChange:
+                    ChangeTileHeight(isAdding);
+                    break;
+                case ClickType.AddPath:
+                    ChangePath(isAdding, 0);
+                    break;
+            }
             if (shiftClicked)
             {
                 foreach (var neigbor in neighbors.Values)
                 {
-                    neigbor.RaiseTile();
+                    neigbor.ClickOnTile(type, isAdding, false);
                 }
             }
         }
     }
 
-    private void RaiseTile()
+    private void ChangeTileHeight(bool isRaising)
     {
         if (!BLOCKED)
         {
-            tileHeightService.RaiseTile();
+            tileHeightService.ChangeTileHeight(isRaising);
+        }
+    }
+
+    private void ChangePath(bool isAdding, int tagType)
+    {
+        if (!BLOCKED)
+        {
+            isPath = isAdding;
+            neighbors.Select(x => x.Value).ToList().ForEach(neighbor => neighbor.ChangeTile());
+            ChangeTile();
         }
     }
 
@@ -68,5 +90,39 @@ public class TilePiece : MonoBehaviour
     public void BlockTile()
     {
         BLOCKED = true;
+    }
+
+    public void ChangeTile()
+    {
+        TurnOffAllTiles();
+        if (!isPath){
+            grassTile.SetActive(true);
+            return;
+        }
+        grassTile.SetActive(false);
+        RotationData test = new();
+        List<int> neighborsWithPaths = neighbors.Where(x => x.Value.isPath).Select(x => x.Key).ToList();
+        var data = test.FindConnectionRotation(neighborsWithPaths);
+        if (data.connectionType == 0){
+            pathTiles.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+        }
+        else {
+            var groupNum = (int)Math.Truncate((float)data.connectionType / 10);
+            var tileNum = (int)data.connectionType - (groupNum * 10);
+            var tile = pathTiles.transform.GetChild(groupNum).GetChild(tileNum);
+            tile.rotation = Quaternion.Euler(tile.rotation.x, data.rotationAmount, tile.rotation.z);
+            tile.gameObject.SetActive(true);
+        }
+    }
+
+    private void TurnOffAllTiles(){
+        for(int i = 0; i < pathTiles.transform.childCount; i++){
+            var group = pathTiles.transform.GetChild(i);
+            for(int t = 0; t < group.transform.childCount; t++){
+                var tile = group.transform.GetChild(t);
+                tile.rotation = Quaternion.Euler(tile.rotation.x, 0, tile.rotation.z);
+                tile.gameObject.SetActive(false);
+            }
+        }
     }
 }

@@ -31,12 +31,12 @@ public class GridMaker : MonoBehaviour
 
     private List<Vector2Int> evenNeighborNodes = new()
     {
-        new Vector2Int(1, 0),
-        new Vector2Int(0, -1),
-        new Vector2Int(-1, 0),
-        new Vector2Int(-1, -1),
-        new Vector2Int(0, 1),
         new Vector2Int(1, -1),
+        new Vector2Int(0, -1),
+        new Vector2Int(-1, -1),
+        new Vector2Int(-1, 0),
+        new Vector2Int(0, 1),
+        new Vector2Int(1, 0),
     };
 
     private void Start()

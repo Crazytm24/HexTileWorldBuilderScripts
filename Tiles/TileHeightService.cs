@@ -40,8 +40,8 @@ public class TileHeightService : MonoBehaviour
 
     private void Update()
     {
-        ManageClickHeight();
         ManageHoverHeight();
+        ManageClickHeight();    // ClickHeight and HoverHeight are fighting each other, looks fine on faster computers but needs improvement
         ColorTransitions();
     }
 
@@ -91,9 +91,22 @@ public class TileHeightService : MonoBehaviour
         }
     }
 
-    public void RaiseTile()
+    public void ChangeTileHeight(bool isRaising)
     {
-        targetHeight += tileData.clickedHeightIncrease;
-        tileData.velocity = tileData.popForce;
+        var newHeight = Mathf.Clamp(
+            isRaising ? targetHeight + tileData.clickedHeightChange : targetHeight - tileData.clickedHeightChange,
+            tileData.clickedHeightMin,
+            tileData.clickedHeightMax
+        );
+        if (targetHeight != newHeight)
+        {
+            targetHeight = newHeight;
+            tileData.velocity = tileData.popForce;
+        }
+        else // Some sort of feedback showing that it cant be changed that direction any more
+        {
+
+        }
+
     }
 }

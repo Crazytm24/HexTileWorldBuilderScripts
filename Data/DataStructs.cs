@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Struct to hold tile data
 [System.Serializable]
 public struct TileHeightInitialData
 {
     //Click Data
     [HideInInspector] public float originalHeight;
-    public float clickedHeightIncrease;
+    public float clickedHeightChange;
+    public float clickedHeightMax;
+    public float clickedHeightMin;
     public float stiffness;
     public float damping;
     public float popForce;

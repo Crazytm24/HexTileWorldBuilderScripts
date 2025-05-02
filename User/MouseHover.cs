@@ -2,8 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ClickType
+{
+    HeightChange,
+    AddPath
+}
+
 public class MouseHover : MonoBehaviour
 {
+    public ClickType clickType;
+
     private void Update()
     {
         CheckForHighlighting();
@@ -18,7 +26,8 @@ public class MouseHover : MonoBehaviour
         if (Physics.Raycast(castPoint, out hit, Mathf.Infinity, LayerMask.GetMask("Hover")))
         {
             hit.transform.GetComponent<TilePiece>().AlertOfHover(isShifted);
-            if (Input.GetMouseButtonDown(0)) hit.transform.GetComponent<TilePiece>().ClickOnTile(isShifted);
+            if (Input.GetMouseButtonDown(0)) hit.transform.GetComponent<TilePiece>().ClickOnTile(clickType, true, isShifted);
+            else if (Input.GetMouseButtonDown(1)) hit.transform.GetComponent<TilePiece>().ClickOnTile(clickType, false, isShifted);
         }
     }
 }

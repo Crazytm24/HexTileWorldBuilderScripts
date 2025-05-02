@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class DataManager : MonoBehaviour
+// Dictionary storing system that will hold all of the data for the tiles allowing for easy access and persistance
+public class DataManager : MonoBehaviour  // SINGLETON
 {
     public static DataManager Instance { get; private set; }
 
@@ -13,7 +14,6 @@ public class DataManager : MonoBehaviour
     [Header("TileHeightService Initial Settings")]
     [SerializeField] private TileHeightInitialData tileHeightInitialData;
 
-    // Singleton Initialization
     private void Awake()
     {
         if (Instance == null)
@@ -29,7 +29,6 @@ public class DataManager : MonoBehaviour
 
     public void FillIntialDataDict()
     {
-        Debug.Log("INITIALIZED DICT");
         initialDataDict[typeof(TileHeightInitialData)] = tileHeightInitialData;
     }
 
@@ -67,7 +66,6 @@ public class DataManager : MonoBehaviour
             Debug.Log(value);
             return (T)value;
         }
-        Debug.Log("HAD NO INITIAL DATA TO RETURN");
         return default;
     }
 }
