@@ -30,7 +30,7 @@ public class ConnectionData
 // This has the calculations for figuring out path connections and rotation of tiles along with what type of tile should be used
 public class RotationData : MonoBehaviour
 {
-    public enum ConnectionTypeEnum
+    public enum ConnectionTypeEnum // These numbers aren't random, the first one _0 is the number of connections, the second 1_ is the layout group for that is needed to connect to it's neighbors correctly
     {
         Connection0 = 0,
         Connection1 = 10,
@@ -76,7 +76,7 @@ public class RotationData : MonoBehaviour
                 return GetDifferentialAndTypeOfTwoConnections(nodes[0], nodes[1], 20);
             case 3:
                 return GetDifferentialAndTypeOfThreeConnections(nodes[0], nodes[1], nodes[2], 30);
-            case 4:
+            case 4:  // once over three connections, you are able to reuse logic, just focus on where the connections are not and it is the same logic as previous steps
                 nodes = InvertNodes(nodes);
                 return GetDifferentialAndTypeOfTwoConnections(nodes[0], nodes[1], 40);
             case 5:
