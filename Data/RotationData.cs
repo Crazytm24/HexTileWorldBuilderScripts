@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+// This section is responsible or finding the layout and the needed rotation of the tile to successfully connect the path to its neighbors paths
+// knowing the a hex will have 6 neighbors starting from 0, it's southern neighbor, rotating left till we get to 5, the bottom right neighbor
+// we should then be able to find the differentiation through the index between the neighbor nodes that have paths to determine layout and rotation
+
 public class ConnectionData
 {
     public int slot;
@@ -30,7 +34,8 @@ public class ConnectionData
 // This has the calculations for figuring out path connections and rotation of tiles along with what type of tile should be used
 public class RotationData : MonoBehaviour
 {
-    public enum ConnectionTypeEnum // These numbers aren't random, the first one _0 is the number of connections, the second 1_ is the layout group for that is needed to connect to it's neighbors correctly
+    // These numbers aren't random, the first one _0 is the number of connections, the second 1_ is the layout group for that is needed to connect to it's neighbors correctly
+    public enum ConnectionTypeEnum 
     {
         Connection0 = 0,
         Connection1 = 10,
@@ -63,6 +68,7 @@ public class RotationData : MonoBehaviour
         }
     }
 
+    // this will be the starting point that the tile will call when it needs to find the layout and rotation
     public RotationDataClass FindConnectionRotation(List<int> nodes)
     {
         nodes.Sort();
@@ -94,6 +100,7 @@ public class RotationData : MonoBehaviour
     {
         int diff = Mathf.Abs(one - two);
         int rotation = 0;
+        // with two neighbors nodes that have a path there are only three possible layouts it could be in
         switch (diff)
         {
             case 1:
@@ -114,6 +121,7 @@ public class RotationData : MonoBehaviour
         return data;
     }
 
+    // three nodes that have a path get quite a bit more complicated
     public RotationDataClass GetDifferentialAndTypeOfThreeConnections(int one, int two, int three, int conStart)
     {
         List<ThreeConnectionDiffs> diffs = new() {
