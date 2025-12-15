@@ -8,14 +8,6 @@ public class TileHeightService : MonoBehaviour
     private TileHeightInitialData tileData;
     private float targetHeight;
 
-    // I dont think this should ever need to reference the parent
-    //private TilePiece tilePiece;
-
-    //public TileHeightService(TilePiece FatherTile)
-    //{
-    //    tilePiece = FatherTile;
-    //}
-
     private void Start()
     {
         tileData = DataManager.Instance.GetInitialData<TileHeightInitialData>();
@@ -103,7 +95,7 @@ public class TileHeightService : MonoBehaviour
             targetHeight = newHeight;
             tileData.velocity = tileData.popForce;
         }
-        else // Some sort of feedback showing that it cant be changed that direction any more
+        else // This needs some sort of feedback showing that it cant be changed that direction any more
         {
 
         }
