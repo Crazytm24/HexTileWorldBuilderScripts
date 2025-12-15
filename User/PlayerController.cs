@@ -4,15 +4,5 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // This will be to control the players navigation in the world, either standard rts type of controls, or maybe going wild with something more like B&W2
 }
