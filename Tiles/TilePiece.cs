@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 
+// This is the main component that dictates the state of the tile
 public class TilePiece : MonoBehaviour
 {
     public Dictionary<int, TilePiece> neighbors = new Dictionary<int, TilePiece>(); // Store neighbors (0-5)
@@ -72,6 +73,7 @@ public class TilePiece : MonoBehaviour
         }
     }
 
+    // Hover over tile effects
     public void AlertOfHover(bool shiftClicked)
     {
         if (tileHeightService && !BLOCKED)
@@ -100,9 +102,9 @@ public class TilePiece : MonoBehaviour
             return;
         }
         grassTile.SetActive(false);
-        RotationData test = new();
+        RotationData rotData = new();
         List<int> neighborsWithPaths = neighbors.Where(x => x.Value.isPath).Select(x => x.Key).ToList();
-        var data = test.FindConnectionRotation(neighborsWithPaths);
+        var data = rotData.FindConnectionRotation(neighborsWithPaths);
         if (data.connectionType == 0){
             pathTiles.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
         }
@@ -115,6 +117,7 @@ public class TilePiece : MonoBehaviour
         }
     }
 
+    // turn off refering to disabling the visual tile topper piece
     private void TurnOffAllTiles(){
         for(int i = 0; i < pathTiles.transform.childCount; i++){
             var group = pathTiles.transform.GetChild(i);
