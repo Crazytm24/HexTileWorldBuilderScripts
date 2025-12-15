@@ -4,15 +4,5 @@ using UnityEngine;
 
 public class TileTopper : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    // This component will be needed to allow the tile topper to be more dynamic
 }
